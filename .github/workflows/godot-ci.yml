@@ -4,14 +4,14 @@ on: push
 env:
   GODOT_VERSION: 4.0
   RELEASE_NAME: alpha11
-  EXPORT_NAME: test-project
+  EXPORT_NAME: TODO_Manager
 
 jobs:
   export-windows:
     name: Windows Export
     runs-on: ubuntu-20.04
     container:
-      image: dodoita/godot-ci:${GODOT_VERSION}-${RELEASE_NAME}
+      image: dodoita/godot-ci:$GODOT_VERSION-$RELEASE_NAME
     steps:
       - name: Checkout
         uses: actions/checkout@v2
