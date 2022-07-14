@@ -7,34 +7,8 @@ env:
   EXPORT_NAME: TODO_Manager
 
 jobs:
-  export-windows:
-    name: Windows Export
-    runs-on: ubuntu-20.04
-    container:
-      image: dodoita/godot-ci:4.0-alpha11
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/templates
-          ls /root/.local/share/godot/templates/
-          mv /root/.local/share/godot/templates/${GODOT_VERSION}.${RELEASE_NAME} ~/.local/share/godot/templates/${GODOT_VERSION}.${RELEASE_NAME}
-      - name: Windows Build
-        run: |
-          mkdir -v -p build/windows
-          cd $EXPORT_NAME
-          godot -v --export "Windows Desktop" ../build/windows/$EXPORT_NAME.exe
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: windows
-          path: build/windows
-
-  # export-linux:
-  #   name: Linux Export
+  # export-windows:
+  #   name: Windows Export
   #   runs-on: ubuntu-20.04
   #   container:
   #     image: dodoita/godot-ci:4.0-alpha11
@@ -47,16 +21,41 @@ jobs:
   #       run: |
   #         mkdir -v -p ~/.local/share/godot/templates
   #         mv /root/.local/share/godot/templates/${GODOT_VERSION}.${RELEASE_NAME} ~/.local/share/godot/templates/${GODOT_VERSION}.${RELEASE_NAME}
-  #     - name: Linux Build
+  #     - name: Windows Build
   #       run: |
-  #         mkdir -v -p build/linux
+  #         mkdir -v -p build/windows
   #         cd $EXPORT_NAME
-  #         godot -v --export "Linux/X11" ../build/linux/$EXPORT_NAME.x86_64
+  #         godot -v --headless --export "Windows Desktop" ../build/windows/$EXPORT_NAME.exe
   #     - name: Upload Artifact
   #       uses: actions/upload-artifact@v1
   #       with:
-  #         name: linux
-  #         path: build/linux
+  #         name: windows
+  #         path: build/windows
+
+  export-linux:
+    name: Linux Export
+    runs-on: ubuntu-20.04
+    container:
+      image: dodoita/godot-ci:4.0-alpha11
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.${RELEASE_NAME} ~/.local/share/godot/templates/${GODOT_VERSION}.${RELEASE_NAME}
+      - name: Linux Build
+        run: |
+          mkdir -v -p build/linux
+          cd $EXPORT_NAME
+          godot -v --headless --export "Linux/X11" ../build/linux/$EXPORT_NAME.x86_64
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: linux
+          path: build/linux
 
   # export-web:
   #   name: Web Export
@@ -76,7 +75,7 @@ jobs:
   #       run: |
   #         mkdir -v -p build/web
   #         cd $EXPORT_NAME
-  #         godot -v --export "HTML5" ../build/web/index.html
+  #         godot -v --headless --export "HTML5" ../build/web/index.html
   #     - name: Upload Artifact
   #       uses: actions/upload-artifact@v1
   #       with:
@@ -109,7 +108,7 @@ jobs:
   #       run: |
   #         mkdir -v -p build/mac
   #         cd $EXPORT_NAME
-  #         godot -v --export "Mac OSX" ../build/mac/$EXPORT_NAME.zip
+  #         godot -v --headless --export "Mac OSX" ../build/mac/$EXPORT_NAME.zip
   #     - name: Upload Artifact
   #       uses: actions/upload-artifact@v1
   #       with:
