@@ -1,0 +1,4 @@
+[submodule "TODO_Manager"]
+	path = TODO_Manager
+	url = https://github.com/Dodoveloper/TODO_Manager.git
+	branch = Godot_4
